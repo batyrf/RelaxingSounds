@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_library.*
 import tm.mr.relaxingsounds.R
 
+@AndroidEntryPoint
 class LibraryFragment : Fragment(R.layout.fragment_library) {
 
 
