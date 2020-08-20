@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 
@@ -29,10 +30,14 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
     implementation("androidx.core:core-ktx:${Versions.core_ktx}")
     implementation("androidx.appcompat:appcompat:${Versions.appcompat}")
     implementation("androidx.constraintlayout:constraintlayout:${Versions.constraintlayout}")
+    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.nav_version}")
+    implementation("androidx.navigation:navigation-ui-ktx:${Versions.nav_version}")
+
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espresso_core}")
