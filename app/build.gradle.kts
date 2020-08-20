@@ -2,7 +2,9 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
 }
 
 
@@ -37,6 +39,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:${Versions.constraintlayout}")
     implementation("androidx.navigation:navigation-fragment-ktx:${Versions.nav_version}")
     implementation("androidx.navigation:navigation-ui-ktx:${Versions.nav_version}")
+
+    implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")

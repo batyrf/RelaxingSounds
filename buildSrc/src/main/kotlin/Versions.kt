@@ -7,4 +7,5 @@ object Versions {
     const val androidx_junit= "1.1.1"
     const val espresso_core= "3.2.0"
     const val nav_version = "2.3.0"
+    const val hilt = "2.28-alpha"
 }
