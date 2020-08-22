@@ -12,4 +12,6 @@ object Versions {
     const val logging_interceptor = "4.7.2"
     const val adapter_rxjava2 = "2.6.3"
     const val rxkotlin = "2.2.0"
+    const val rxandroid = "2.0.1"
+    const val room_version = "2.2.5"
 }
