@@ -28,6 +28,12 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -42,6 +48,11 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
+
+    implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")
+    implementation("com.squareup.retrofit2:converter-gson:${Versions.converter_gson}")
+    implementation("com.squareup.okhttp3:logging-interceptor:${Versions.logging_interceptor}")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:${Versions.adapter_rxjava2}")
 
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
