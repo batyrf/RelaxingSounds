@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import tm.mr.relaxingsounds.data.model.Category
 import tm.mr.relaxingsounds.data.model.Sound
 
-@Database(entities = [Sound::class, Category::class], version = 1)
+@Database(entities = [Sound::class, Category::class], version = 1, exportSchema = false)
 abstract class SoundDatabase : RoomDatabase() {
 
     abstract fun soundDao(): SoundDao
