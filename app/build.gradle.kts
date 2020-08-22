@@ -49,10 +49,16 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
 
+    implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}")
     implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.converter_gson}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.logging_interceptor}")
     implementation("com.squareup.retrofit2:adapter-rxjava2:${Versions.adapter_rxjava2}")
+
+    implementation("androidx.room:room-runtime:${Versions.room_version}")
+    kapt("androidx.room:room-compiler:${Versions.room_version}")
+    implementation("androidx.room:room-ktx:${Versions.room_version}")
+    implementation("androidx.room:room-rxjava2:${Versions.room_version}")
 
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
