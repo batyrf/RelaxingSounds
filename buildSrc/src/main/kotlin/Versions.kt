@@ -13,5 +13,6 @@ object Versions {
     const val adapter_rxjava2 = "2.6.3"
     const val rxkotlin = "2.2.0"
     const val rxandroid = "2.0.1"
-    const val room_version = "2.2.5"
+    const val room_version = "2.3.0-alpha02"
+    const val paging_version = "3.0.0-alpha03"
 }

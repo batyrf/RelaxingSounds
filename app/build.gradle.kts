@@ -60,6 +60,9 @@ dependencies {
     implementation("androidx.room:room-ktx:${Versions.room_version}")
     implementation("androidx.room:room-rxjava2:${Versions.room_version}")
 
+    implementation("androidx.paging:paging-runtime:${Versions.paging_version}")
+    implementation("androidx.paging:paging-rxjava2:${Versions.paging_version}")
+
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espresso_core}")
