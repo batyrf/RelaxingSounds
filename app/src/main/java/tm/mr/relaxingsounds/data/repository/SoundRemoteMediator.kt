@@ -1,11 +1,14 @@
 package tm.mr.relaxingsounds.data.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.LoadType.*
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxRemoteMediator
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import tm.mr.relaxingsounds.data.local.SoundDatabase
 import tm.mr.relaxingsounds.data.model.Sound
@@ -13,13 +16,10 @@ import tm.mr.relaxingsounds.data.remote.SoundsApi
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class SoundRemoteMediator @Inject constructor() : RxRemoteMediator<Int, Sound>() {
-
-    @Inject
-    lateinit var db: SoundDatabase
-
-    @Inject
-    lateinit var api: SoundsApi
+class SoundRemoteMediator @Inject constructor(
+    private val db: SoundDatabase,
+    private val api: SoundsApi
+) : RxRemoteMediator<Int, Sound>() {
 
     var lastId: String? = null
     var categoryId: String? = null
@@ -33,18 +33,17 @@ class SoundRemoteMediator @Inject constructor() : RxRemoteMediator<Int, Sound>()
             .subscribeOn(Schedulers.io())
             .flatMap {
                 when (it) {
-                    REFRESH -> Single.never()
                     PREPEND -> Single.just(MediatorResult.Success(endOfPaginationReached = true))
-                    APPEND -> api.sounds(lastId, categoryId, limit)
-                        .map { it.data ?: listOf() }
-                        .doOnSuccess {
-                            it.map {
-                                db.soundDao().insertSound(it)
+                    REFRESH, APPEND -> api.sounds(lastId, categoryId, limit)
+                            .map { it.data ?: listOf() }
+                            .doOnSuccess {
+                                db.soundDao().insertSounds(it)
+                                    .subscribe({}, {})
+                                    .addTo(CompositeDisposable())
                             }
-                        }
-                        .map { it.isEmpty() }
-                        .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it) }
-                        .onErrorReturn { MediatorResult.Error(it) }
+                            .map { it.isEmpty() }
+                            .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it) }
+                            .onErrorReturn { MediatorResult.Error(it) }
                 }
             }
             .onErrorReturn { MediatorResult.Error(it) }
