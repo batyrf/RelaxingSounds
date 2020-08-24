@@ -57,7 +57,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.androidx_hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
-    kapt("androidx.hilt:hilt-compiler:${Versions.hilt}")
+    kapt("androidx.hilt:hilt-compiler:${Versions.androidx_hilt}")
 
     implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}")
     implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")
