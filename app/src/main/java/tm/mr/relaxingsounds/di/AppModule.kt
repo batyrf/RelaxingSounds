@@ -14,6 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import tm.mr.relaxingsounds.data.local.SoundDatabase
 import tm.mr.relaxingsounds.data.remote.SoundsApi
+import tm.mr.relaxingsounds.data.repository.SoundRepository
 import javax.inject.Singleton
 
 @Module
@@ -61,5 +62,10 @@ object AppModule {
             applicationContext,
             SoundDatabase::class.java, "RelaxingSounds.db"
         ).build()
+
+    @Singleton
+    @Provides
+    fun provideRepository(api: SoundsApi, db: SoundDatabase): SoundRepository =
+        SoundRepository(api, db)
 
 }

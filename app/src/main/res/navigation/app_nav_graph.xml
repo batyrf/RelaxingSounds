@@ -23,6 +23,9 @@
         android:name="tm.mr.relaxingsounds.ui.list.view.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
         <action
             android:id="@+id/action_listFragment_to_libraryFragment"
             app:destination="@id/libraryFragment" />

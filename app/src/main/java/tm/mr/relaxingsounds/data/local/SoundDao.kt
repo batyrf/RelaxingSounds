@@ -22,4 +22,7 @@ interface SoundDao {
     @Query("SELECT * FROM categories")
     fun listCategories(): Observable<List<Category>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCategories(categories: List<Category>): Completable
+
 }
