@@ -8,3 +8,4 @@ Simultaneous Multiple Audio Player for relaxing tracks utilizing modern android 
 - [x] [ci - github actions](https://github.com/features/actions)
 - [x] [Paging 3.0](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
 - [x] [Room](https://developer.android.com/topic/libraries/architecture/room)
+- [x] [data-binding](https://developer.android.com/topic/libraries/data-binding)
