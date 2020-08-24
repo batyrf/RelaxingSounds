@@ -24,6 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -72,6 +73,8 @@ dependencies {
 
     implementation("androidx.paging:paging-runtime:${Versions.paging_version}")
     implementation("androidx.paging:paging-rxjava2:${Versions.paging_version}")
+
+    implementation(project(mapOf("path" to ":audioplayer")))
 
     testImplementation("junit:junit:${Versions.junit}")
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
