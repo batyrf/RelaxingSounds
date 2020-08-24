@@ -12,6 +12,10 @@ android {
     compileSdkVersion(30)
     buildToolsVersion = "29.0.3"
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     defaultConfig {
         applicationId = "tm.mr.relaxingsounds"
         minSdkVersion(15)
@@ -34,6 +38,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
 }
 
 dependencies {
@@ -47,7 +55,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:${Versions.nav_version}")
 
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.androidx_hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
+    kapt("androidx.hilt:hilt-compiler:${Versions.androidx_hilt}")
 
     implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}")
     implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")

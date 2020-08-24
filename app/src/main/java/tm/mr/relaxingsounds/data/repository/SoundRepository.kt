@@ -5,14 +5,20 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.observable
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import tm.mr.relaxingsounds.data.local.SoundDatabase
+import tm.mr.relaxingsounds.data.model.Category
 import tm.mr.relaxingsounds.data.model.Sound
+import tm.mr.relaxingsounds.data.remote.SoundsApi
 import javax.inject.Inject
 
-class SoundRepository @Inject constructor() {
-
-    @Inject
-    lateinit var database: SoundDatabase
+class SoundRepository @Inject constructor(
+    private val api: SoundsApi,
+    private val database: SoundDatabase
+) {
 
     @Inject
     lateinit var remoteMediator: SoundRemoteMediator
@@ -42,4 +48,20 @@ class SoundRepository @Inject constructor() {
         ).observable
     }
 
+    fun getCategories(): Observable<List<Category>> {
+        return api.categories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                it.data ?: listOf()
+            }
+            .doOnNext {
+                database.soundDao().insertCategories(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({}, {})
+                    .addTo(CompositeDisposable())
+            }
+            .onErrorResumeNext(database.soundDao().listCategories())
+    }
 }
