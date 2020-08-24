@@ -13,6 +13,9 @@ interface SoundDao {
     @Query("SELECT * FROM sounds ORDER BY id ASC")
     fun listSounds(): PagingSource<Int, Sound>
 
+    @Query("SELECT * FROM sounds WHERE isLike = 1")
+    fun listLikedSounds(): Observable<List<Sound>>
+
     @Query("SELECT * FROM sounds WHERE categoryId IN (:categoryId)")
     fun listSoundsByCategory(categoryId: String): PagingSource<Int, Sound>
 
