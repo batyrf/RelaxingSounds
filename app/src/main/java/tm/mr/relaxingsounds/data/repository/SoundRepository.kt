@@ -66,4 +66,10 @@ class SoundRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getLikedSounds(): Observable<List<Sound>> {
+        return database.soundDao().listLikedSounds()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

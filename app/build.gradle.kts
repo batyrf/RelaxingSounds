@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "tm.mr.relaxingsounds"
-        minSdkVersion(15)
+        minSdkVersion(19)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
