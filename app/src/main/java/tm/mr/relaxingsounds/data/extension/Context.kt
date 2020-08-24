@@ -1,4 +1,4 @@
-package tm.mr.relaxingsounds.data
+package tm.mr.relaxingsounds.data.extension
 
 import android.content.Context
 import android.widget.Toast

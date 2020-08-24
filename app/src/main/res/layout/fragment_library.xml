@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.library.view.LibraryFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:elevation="15dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <tm.mr.relaxingsounds.ui.library.view.LibraryRecyclerView
         android:id="@+id/libraryRV"
         android:layout_width="match_parent"
