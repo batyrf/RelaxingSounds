@@ -10,8 +10,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import tm.mr.relaxingsounds.R
 import tm.mr.relaxingsounds.audioplayer.AudioPlayer
+import tm.mr.relaxingsounds.data.extension.gone
 import tm.mr.relaxingsounds.data.extension.ignoreNull
 import tm.mr.relaxingsounds.data.model.Resource
+import tm.mr.relaxingsounds.data.extension.toast
+import tm.mr.relaxingsounds.data.extension.visible
 import tm.mr.relaxingsounds.ui.favorite.viewmodel.FavoriteViewModel
 
 @AndroidEntryPoint
@@ -45,11 +48,13 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             when (it) {
                 is Resource.success -> {
                     (favoriteRV.adapter as? FavoriteAdapter)?.sounds = it.data.toMutableList()
+                    progress.gone()
                 }
                 is Resource.error -> {
+                    view.context.toast(it.msg)
+                    progress.gone()
                 }
-                Resource.loading -> {
-                }
+                Resource.loading -> progress.visible()
             }
         })
 
