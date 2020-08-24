@@ -10,6 +10,6 @@ data class Sound(
     @NonNull @PrimaryKey val id: String,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "url") val url: String?,
-    @ColumnInfo(name = "isLike") val isLike: Boolean?,
+    @ColumnInfo(name = "isLike") var isLike: Boolean?,
     @NonNull @ColumnInfo(name = "categoryId") val categoryId: String
 )

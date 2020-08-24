@@ -16,8 +16,11 @@ interface SoundDao {
     @Query("SELECT * FROM sounds WHERE categoryId IN (:categoryId)")
     fun listSoundsByCategory(categoryId: String): PagingSource<Int, Sound>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSound(sound: Sound): Completable
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insertSounds(sounds: List<Sound>): Completable
+
+    @Update
+    fun updateSound(sound: Sound): Completable
 
     @Query("SELECT * FROM categories")
     fun listCategories(): Observable<List<Category>>
