@@ -12,6 +12,7 @@ import tm.mr.relaxingsounds.R
 import tm.mr.relaxingsounds.audioplayer.AudioPlayer
 import tm.mr.relaxingsounds.data.extension.ignoreNull
 import tm.mr.relaxingsounds.data.model.Resource
+import tm.mr.relaxingsounds.data.toast
 import tm.mr.relaxingsounds.ui.favorite.viewmodel.FavoriteViewModel
 
 @AndroidEntryPoint
@@ -43,11 +44,8 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
         viewModel.sounds.observe(this as LifecycleOwner, Observer {
             when (it) {
-                is Resource.success -> {
-                    (favoriteRV.adapter as? FavoriteAdapter)?.sounds = it.data.toMutableList()
-                }
-                is Resource.error -> {
-                }
+                is Resource.success -> (favoriteRV.adapter as? FavoriteAdapter)?.sounds = it.data.toMutableList()
+                is Resource.error -> view.context.toast(it.msg)
                 Resource.loading -> {
                 }
             }

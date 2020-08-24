@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_library.*
 import tm.mr.relaxingsounds.R
 import tm.mr.relaxingsounds.data.model.Resource
+import tm.mr.relaxingsounds.data.toast
 import tm.mr.relaxingsounds.ui.library.viewmodel.LibraryViewModel
 
 @AndroidEntryPoint
@@ -30,8 +31,7 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
             .observe(this as LifecycleOwner, Observer {
                 when (it) {
                     is Resource.success -> libraryRV.setItems(it.data)
-                    is Resource.error -> {
-                    }
+                    is Resource.error -> view.context.toast(it.msg)
                     Resource.loading -> {
                     }
                 }

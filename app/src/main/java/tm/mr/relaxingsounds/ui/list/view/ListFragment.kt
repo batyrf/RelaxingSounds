@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list.*
 import tm.mr.relaxingsounds.R
 import tm.mr.relaxingsounds.data.model.Resource
+import tm.mr.relaxingsounds.data.toast
 import tm.mr.relaxingsounds.ui.list.viewmodel.ListViewModel
 
 @AndroidEntryPoint
@@ -27,11 +28,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
         listViewModel.sounds.observe(this as LifecycleOwner, Observer {
             when (it) {
-                is Resource.success -> {
-                    (listRV.adapter as? ListViewAdapter)?.submitData(lifecycle, it.data)
-                }
-                is Resource.error -> {
-                }
+                is Resource.success -> (listRV.adapter as? ListViewAdapter)?.submitData(lifecycle, it.data)
+                is Resource.error -> view.context.toast(it.msg)
                 Resource.loading -> {
                 }
             }
