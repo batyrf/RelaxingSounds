@@ -15,5 +15,7 @@ object Versions {
     const val rxkotlin = "2.2.0"
     const val rxandroid = "2.0.1"
     const val room_version = "2.3.0-alpha02"
-    const val paging_version = "3.0.0-alpha03"
+    const val paging_version = "3.0.0-alpha05"
+    const val core_testing = "1.1.1"
+    const val mockk = "1.10.0"
 }
