@@ -34,6 +34,10 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -77,6 +81,9 @@ dependencies {
     implementation(project(mapOf("path" to ":audioplayer")))
 
     testImplementation("junit:junit:${Versions.junit}")
+    testImplementation("android.arch.core:core-testing:${Versions.core_testing}")
+    testImplementation("io.mockk:mockk:${Versions.mockk}")
+
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espresso_core}")
 

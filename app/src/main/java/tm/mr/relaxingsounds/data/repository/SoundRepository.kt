@@ -20,12 +20,12 @@ class SoundRepository @Inject constructor(
     private val api: SoundsApi,
     private val database: SoundDatabase,
     private val remoteMediator: SoundRemoteMediator
-) {
+): Repository {
 
-    fun getSounds(
-        lastId: String? = null,
-        categoryId: String? = null,
-        limit: Int? = null
+    override fun getSounds(
+        lastId: String?,
+        categoryId: String?,
+        limit: Int?
     ): Observable<PagingData<Sound>> {
         remoteMediator.lastId = lastId
         remoteMediator.categoryId = categoryId
@@ -43,7 +43,7 @@ class SoundRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getCategories(): Observable<List<Category>> {
+    override fun getCategories(): Observable<List<Category>> {
         return api.categories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -60,13 +60,13 @@ class SoundRepository @Inject constructor(
             .onErrorResumeNext(database.soundDao().listCategories())
     }
 
-    fun updateSound(sound: Sound): Completable {
+    override fun updateSound(sound: Sound): Completable {
         return database.soundDao().updateSound(sound)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getLikedSounds(): Observable<List<Sound>> {
+    override fun getLikedSounds(): Observable<List<Sound>> {
         return database.soundDao().listLikedSounds()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
