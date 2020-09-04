@@ -12,6 +12,7 @@ Simultaneous Multiple Audio Player for relaxing tracks utilizing modern android 
 - [x] [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [x] [data-binding](https://developer.android.com/topic/libraries/data-binding)
 - [x] [exoplayer](https://github.com/google/ExoPlayer)
+- [x] [unit tests]()
 
 In the process of development tried to abide by git-flow principles.
 
