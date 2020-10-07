@@ -8,9 +8,7 @@ import tm.mr.relaxingsounds.data.model.Sound
 
 interface Repository {
     fun getSounds(
-        lastId: String? = null,
-        categoryId: String? = null,
-        limit: Int? = null
+        categoryId: String? = null
     ): Observable<PagingData<Sound>>
 
     fun getCategories(): Observable<List<Category>>
