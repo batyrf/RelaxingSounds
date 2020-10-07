@@ -21,9 +21,9 @@ class SoundRemoteMediator @Inject constructor(
     private val api: SoundsApi
 ) : RxRemoteMediator<Int, Sound>() {
 
-    var lastId: String? = null
+    private var lastId: String? = null
     var categoryId: String? = null
-    var limit: Int? = null
+    private var limit: Int = 10
 
     override fun loadSingle(
         loadType: LoadType,
@@ -37,6 +37,7 @@ class SoundRemoteMediator @Inject constructor(
                     REFRESH, APPEND -> api.sounds(lastId, categoryId, limit)
                             .map { it.data ?: listOf() }
                             .doOnSuccess {
+                                lastId = it.lastOrNull()?.id
                                 db.soundDao().insertSounds(it)
                                     .subscribe({}, {})
                                     .addTo(CompositeDisposable())

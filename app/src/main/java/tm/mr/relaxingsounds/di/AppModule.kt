@@ -60,10 +60,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideSoundDatabase(@ApplicationContext applicationContext: Context): SoundDatabase =
-        Room.databaseBuilder(
-            applicationContext,
-            SoundDatabase::class.java, "RelaxingSounds.db"
-        ).build()
+        Room.databaseBuilder(applicationContext, SoundDatabase::class.java, "RelaxingSounds.db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Singleton
     @Provides

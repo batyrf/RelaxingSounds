@@ -23,13 +23,9 @@ class SoundRepository @Inject constructor(
 ): Repository {
 
     override fun getSounds(
-        lastId: String?,
-        categoryId: String?,
-        limit: Int?
+        categoryId: String?
     ): Observable<PagingData<Sound>> {
-        remoteMediator.lastId = lastId
         remoteMediator.categoryId = categoryId
-        remoteMediator.limit = limit
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = remoteMediator,
