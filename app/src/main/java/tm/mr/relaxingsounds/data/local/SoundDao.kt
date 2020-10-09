@@ -2,8 +2,6 @@ package tm.mr.relaxingsounds.data.local
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import io.reactivex.Completable
-import io.reactivex.Observable
 import tm.mr.relaxingsounds.data.model.Category
 import tm.mr.relaxingsounds.data.model.Sound
 
@@ -14,21 +12,21 @@ interface SoundDao {
     fun listSounds(): PagingSource<Int, Sound>
 
     @Query("SELECT * FROM sounds WHERE isLike = 1")
-    fun listLikedSounds(): Observable<List<Sound>>
+    suspend fun listLikedSounds(): List<Sound>
 
     @Query("SELECT * FROM sounds WHERE categoryId IN (:categoryId)")
     fun listSoundsByCategory(categoryId: String): PagingSource<Int, Sound>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertSounds(sounds: List<Sound>): Completable
+    suspend fun insertSounds(sounds: List<Sound>)
 
     @Update
-    fun updateSound(sound: Sound): Completable
+    suspend fun updateSound(sound: Sound)
 
     @Query("SELECT * FROM categories")
-    fun listCategories(): Observable<List<Category>>
+    suspend fun listCategories(): List<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCategories(categories: List<Category>): Completable
+    suspend fun insertCategories(categories: List<Category>)
 
 }

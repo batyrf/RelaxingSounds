@@ -2,12 +2,11 @@ package tm.mr.relaxingsounds.ui.list.viewmodel
 
 import androidx.lifecycle.Observer
 import androidx.paging.PagingData
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
-import io.reactivex.Completable
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.flow
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import tm.mr.relaxingsounds.data.model.Resource
@@ -15,7 +14,7 @@ import tm.mr.relaxingsounds.data.model.Sound
 import tm.mr.relaxingsounds.data.repository.Repository
 import tm.mr.relaxingsounds.ui.BaseViewModelTest
 
-class ListViewModelTest: BaseViewModelTest() {
+class ListViewModelTest : BaseViewModelTest() {
 
     @MockK
     lateinit var mockSoundRepository: Repository
@@ -34,7 +33,9 @@ class ListViewModelTest: BaseViewModelTest() {
     fun `given soundRepository returns data, when getSounds called, then update live data`() {
         val mockCategoryId = "123"
         val expectedMockData = PagingData.from<Sound>(listOf())
-        every { mockSoundRepository.getSounds(categoryId = mockCategoryId) } returns Observable.just(expectedMockData)
+        coEvery { mockSoundRepository.getSounds(categoryId = mockCategoryId) } returns flow {
+            emit(expectedMockData)
+        }
 
         viewModel.getSounds(categoryId = mockCategoryId)
 
@@ -47,18 +48,21 @@ class ListViewModelTest: BaseViewModelTest() {
     fun `given soundRepository returns error, when getSounds called, then update live data with error`() {
         val mockCategoryId = "123"
         val expectedErrorMessage = "my error"
-        every { mockSoundRepository.getSounds(categoryId = mockCategoryId) } returns Observable.error(Throwable(expectedErrorMessage))
+        coEvery { mockSoundRepository.getSounds(categoryId = mockCategoryId) } returns flow {
+            error(expectedErrorMessage)
+        }
 
-        viewModel.getSounds(categoryId =  mockCategoryId)
+        viewModel.getSounds(categoryId = mockCategoryId)
 
         assert(viewModel.sounds.value is Resource.error)
         assertEquals(expectedErrorMessage, (viewModel.sounds.value as Resource.error).msg)
     }
 
     private val mockSound = mockk<Sound>()
+
     @Test
     fun `given soundRepository completes, when updateSound called, then don't change anything on sounds livedata`() {
-        every { mockSoundRepository.updateSound(mockSound) } returns Completable.complete()
+        coEvery { mockSoundRepository.updateSound(mockSound) }
 
         viewModel.sounds.observeForever(mockLiveDataObserver)
 
@@ -68,7 +72,7 @@ class ListViewModelTest: BaseViewModelTest() {
 
     @Test
     fun `given soundRepository returns error, when updateSound called, then don't change anything on sounds livedata`() {
-        every { mockSoundRepository.updateSound(mockSound) } returns Completable.error(Throwable())
+        coEvery { mockSoundRepository.updateSound(mockSound) } throws Throwable()
 
         viewModel.sounds.observeForever(mockLiveDataObserver)
 

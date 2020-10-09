@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.rxjava2.cachedIn
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
+import androidx.paging.cachedIn
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.model.Sound
 import tm.mr.relaxingsounds.data.repository.Repository
@@ -19,24 +19,24 @@ class ListViewModel @ViewModelInject constructor(
     val sounds: MutableLiveData<Resource<PagingData<Sound>>> = MutableLiveData()
 
     fun updateSound(sound: Sound) {
-        repository.updateSound(sound)
-            .subscribe({}, {})
-            .addTo(CompositeDisposable())
+        viewModelScope.launch {
+            repository.updateSound(sound)
+        }
     }
 
     fun getSounds(categoryId: String) {
         sounds.postValue(Resource.loading)
-        repository.getSounds(categoryId = categoryId)
-            .cachedIn(viewModelScope)
-            .subscribe(
-                {
-                    sounds.postValue(Resource.success(it))
-                },
-                {
-                    sounds.postValue(Resource.error(it.localizedMessage ?: ""))
-                }
-            )
-            .addTo(CompositeDisposable())
+        viewModelScope.launch {
+            try {
+                repository.getSounds(categoryId = categoryId)
+                    .cachedIn(viewModelScope)
+                    .collect {
+                        sounds.postValue(Resource.success(it))
+                    }
+            } catch (e: Exception) {
+                sounds.postValue(Resource.error(e.localizedMessage))
+            }
+        }
     }
 
 }

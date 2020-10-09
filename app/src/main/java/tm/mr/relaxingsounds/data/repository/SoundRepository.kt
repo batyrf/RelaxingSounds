@@ -3,15 +3,13 @@ package tm.mr.relaxingsounds.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.rxjava2.observable
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import tm.mr.relaxingsounds.data.extension.ignoreNull
 import tm.mr.relaxingsounds.data.local.SoundDatabase
 import tm.mr.relaxingsounds.data.model.Category
+import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.model.Sound
 import tm.mr.relaxingsounds.data.remote.SoundsApi
 import javax.inject.Inject
@@ -24,7 +22,7 @@ class SoundRepository @Inject constructor(
 
     override fun getSounds(
         categoryId: String?
-    ): Observable<PagingData<Sound>> {
+    ): Flow<PagingData<Sound>> {
         remoteMediator.categoryId = categoryId
         return Pager(
             config = PagingConfig(pageSize = 20),
@@ -34,38 +32,36 @@ class SoundRepository @Inject constructor(
                     database.soundDao().listSoundsByCategory(it)
                 } ?: database.soundDao().listSounds()
             }
-        ).observable
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        ).flow
     }
 
-    override fun getCategories(): Observable<List<Category>> {
-        return api.categories()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                it.data ?: listOf()
+    override suspend fun getCategories(): Resource<List<Category>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = api.categories().data.ignoreNull()
+                database.soundDao().insertCategories(result)
+                Resource.success(result)
+            } catch (e: Exception) {
+                val dbResult = database.soundDao().listCategories()
+                Resource.success(dbResult)
             }
-            .doOnNext {
-                database.soundDao().insertCategories(it)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({}, {})
-                    .addTo(CompositeDisposable())
-            }
-            .onErrorResumeNext(database.soundDao().listCategories())
+        }
     }
 
-    override fun updateSound(sound: Sound): Completable {
+    override suspend fun updateSound(sound: Sound) {
         return database.soundDao().updateSound(sound)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getLikedSounds(): Observable<List<Sound>> {
-        return database.soundDao().listLikedSounds()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    override suspend fun getLikedSounds(): Resource<List<Sound>> {
+        return withContext(Dispatchers.IO) {
+            database.soundDao().listLikedSounds()
+            try {
+                val result = database.soundDao().listLikedSounds()
+                Resource.success(result)
+            } catch (e: Exception) {
+                Resource.error(e.localizedMessage)
+            }
+        }
     }
 
 }
