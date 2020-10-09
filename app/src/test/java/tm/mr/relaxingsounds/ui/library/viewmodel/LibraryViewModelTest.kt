@@ -1,17 +1,15 @@
 package tm.mr.relaxingsounds.ui.library.viewmodel
 
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import io.reactivex.Observable
 import org.junit.*
-
 import org.junit.Assert.*
 import tm.mr.relaxingsounds.data.model.Category
 import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.repository.Repository
 import tm.mr.relaxingsounds.ui.BaseViewModelTest
 
-class LibraryViewModelTest: BaseViewModelTest() {
+class LibraryViewModelTest : BaseViewModelTest() {
 
     @MockK
     private lateinit var mockSoundRepository: Repository
@@ -25,7 +23,7 @@ class LibraryViewModelTest: BaseViewModelTest() {
     @Test
     fun `given soundRepository returns data, when getCategories called, then update live data`() {
         val expectedCategories = listOf<Category>()
-        every { mockSoundRepository.getCategories() } returns Observable.just(expectedCategories)
+        coEvery { mockSoundRepository.getCategories() } returns Resource.success(expectedCategories)
 
         viewModel.getCategories()
 
@@ -35,13 +33,13 @@ class LibraryViewModelTest: BaseViewModelTest() {
 
     @Test
     fun `given soundRepository returns error, when getCategories called, then update live data with error resource`() {
-        val expectedError = Throwable("my error")
-        every { mockSoundRepository.getCategories() } returns Observable.error(expectedError)
+        val expectedErrorMessage = "my error"
+        coEvery { mockSoundRepository.getCategories() } returns Resource.error(expectedErrorMessage)
 
         viewModel.getCategories()
 
         assertTrue(viewModel.categories.value is Resource.error)
-        assertEquals(expectedError.message, (viewModel.categories.value as Resource.error).msg)
+        assertEquals(expectedErrorMessage, (viewModel.categories.value as Resource.error).msg)
     }
 
 }

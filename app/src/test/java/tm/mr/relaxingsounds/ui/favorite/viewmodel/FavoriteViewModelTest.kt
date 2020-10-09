@@ -1,12 +1,10 @@
 package tm.mr.relaxingsounds.ui.favorite.viewmodel
 
 import androidx.lifecycle.Observer
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
-import io.reactivex.Completable
-import io.reactivex.Observable
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -19,7 +17,7 @@ import tm.mr.relaxingsounds.ui.BaseViewModelTest
 
 
 @RunWith(MockitoJUnitRunner::class)
-class  FavoriteViewModelTest: BaseViewModelTest() {
+class FavoriteViewModelTest : BaseViewModelTest() {
 
     @MockK
     lateinit var mockSoundRepository: Repository
@@ -37,7 +35,7 @@ class  FavoriteViewModelTest: BaseViewModelTest() {
     @Test
     fun `given soundRepository returns data, when listLikedSounds called, then update live data`() {
         val expectedData = listOf<Sound>()
-        every { mockSoundRepository.getLikedSounds() } returns Observable.just(expectedData)
+        coEvery { mockSoundRepository.getLikedSounds() } returns Resource.success(expectedData)
 
         viewModel.listLikedSounds()
 
@@ -48,7 +46,7 @@ class  FavoriteViewModelTest: BaseViewModelTest() {
     @Test
     fun `given soundRepository returns error, when listLikedSounds called, then update live data with error`() {
         val expectedMessage = "my error"
-        every { mockSoundRepository.getLikedSounds() } returns Observable.error(Throwable(expectedMessage))
+        coEvery { mockSoundRepository.getLikedSounds() } returns Resource.error(expectedMessage)
 
         viewModel.listLikedSounds()
         assert(viewModel.sounds.value is Resource.error)
@@ -57,7 +55,7 @@ class  FavoriteViewModelTest: BaseViewModelTest() {
 
     @Test
     fun `given soundRepository completes, when updateSound called, then don't change anything on live data`() {
-        every { mockSoundRepository.updateSound(mockSound) } returns Completable.complete()
+        coEvery { mockSoundRepository.updateSound(mockSound) }
 
         viewModel.sounds.observeForever(mockLiveDataObserver)
 
@@ -69,7 +67,7 @@ class  FavoriteViewModelTest: BaseViewModelTest() {
 
     @Test
     fun `given soundRepository returns error, when updateSound called, then don't change anything on live data`() {
-        every { mockSoundRepository.updateSound(mockSound) } returns Completable.error(Throwable())
+        coEvery { mockSoundRepository.updateSound(mockSound) } throws Throwable()
 
         viewModel.sounds.observeForever(mockLiveDataObserver)
 

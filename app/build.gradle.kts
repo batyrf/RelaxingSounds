@@ -64,25 +64,24 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Versions.androidx_hilt}")
 
-    implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}")
-    implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.converter_gson}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.logging_interceptor}")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:${Versions.adapter_rxjava2}")
 
     implementation("androidx.room:room-runtime:${Versions.room_version}")
     kapt("androidx.room:room-compiler:${Versions.room_version}")
     implementation("androidx.room:room-ktx:${Versions.room_version}")
-    implementation("androidx.room:room-rxjava2:${Versions.room_version}")
 
     implementation("androidx.paging:paging-runtime:${Versions.paging_version}")
-    implementation("androidx.paging:paging-rxjava2:${Versions.paging_version}")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}")
 
     implementation(project(mapOf("path" to ":audioplayer")))
 
     testImplementation("junit:junit:${Versions.junit}")
     testImplementation("android.arch.core:core-testing:${Versions.core_testing}")
     testImplementation("io.mockk:mockk:${Versions.mockk}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
 
     androidTestImplementation("androidx.test.ext:junit:${Versions.androidx_junit}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espresso_core}")

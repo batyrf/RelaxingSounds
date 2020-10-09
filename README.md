@@ -13,6 +13,7 @@ Simultaneous Multiple Audio Player for relaxing tracks utilizing modern android 
 - [x] [data-binding](https://developer.android.com/topic/libraries/data-binding)
 - [x] [exoplayer](https://github.com/google/ExoPlayer)
 - [x] [unit tests]()
+- [x] [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 
 In the process of development tried to abide by git-flow principles.
 

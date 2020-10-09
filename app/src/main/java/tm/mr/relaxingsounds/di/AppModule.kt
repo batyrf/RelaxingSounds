@@ -10,7 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import tm.mr.relaxingsounds.data.local.SoundDatabase
 import tm.mr.relaxingsounds.data.remote.SoundsApi
@@ -50,7 +49,6 @@ object AppModule {
             .baseUrl("https://us-central1-awesome0-86d59.cloudfunctions.net/")
             .client(client)
             .addConverterFactory(gsonConverterFactory)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
 
