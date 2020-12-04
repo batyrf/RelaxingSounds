@@ -7,12 +7,12 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flow
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.model.Sound
 import tm.mr.relaxingsounds.data.repository.Repository
 import tm.mr.relaxingsounds.ui.BaseViewModelTest
+import com.google.common.truth.Truth.assertThat
 
 class ListViewModelTest : BaseViewModelTest() {
 
@@ -39,7 +39,7 @@ class ListViewModelTest : BaseViewModelTest() {
 
         viewModel.getSounds(categoryId = mockCategoryId)
 
-        assert(viewModel.sounds.value is Resource.success)
+        assertThat(viewModel.sounds.value).isInstanceOf(Resource.success::class.java)
         //todo will be finished later, getting pagingdatas
 //        assertEquals(expectedMockData, (viewModel.sounds.value as Resource.success).data)
     }
@@ -54,8 +54,8 @@ class ListViewModelTest : BaseViewModelTest() {
 
         viewModel.getSounds(categoryId = mockCategoryId)
 
-        assert(viewModel.sounds.value is Resource.error)
-        assertEquals(expectedErrorMessage, (viewModel.sounds.value as Resource.error).msg)
+        assertThat(viewModel.sounds.value).isInstanceOf(Resource.error::class.java)
+        assertThat((viewModel.sounds.value as Resource.error).msg).isEqualTo(expectedErrorMessage)
     }
 
     private val mockSound = mockk<Sound>()

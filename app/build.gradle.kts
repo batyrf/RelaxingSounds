@@ -80,6 +80,7 @@ dependencies {
 
     testImplementation("junit:junit:${Versions.junit}")
     testImplementation("android.arch.core:core-testing:${Versions.core_testing}")
+    testImplementation("com.google.truth:truth:1.1")
     testImplementation("io.mockk:mockk:${Versions.mockk}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
 

@@ -5,8 +5,6 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
@@ -14,7 +12,7 @@ import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.model.Sound
 import tm.mr.relaxingsounds.data.repository.Repository
 import tm.mr.relaxingsounds.ui.BaseViewModelTest
-
+import com.google.common.truth.Truth.assertThat
 
 @RunWith(MockitoJUnitRunner::class)
 class FavoriteViewModelTest : BaseViewModelTest() {
@@ -39,8 +37,8 @@ class FavoriteViewModelTest : BaseViewModelTest() {
 
         viewModel.listLikedSounds()
 
-        assert(viewModel.sounds.value is Resource.success)
-        assertEquals(expectedData, (viewModel.sounds.value as Resource.success).data)
+        assertThat(viewModel.sounds.value).isInstanceOf(Resource.success::class.java)
+        assertThat((viewModel.sounds.value as Resource.success).data).isEqualTo(expectedData)
     }
 
     @Test
@@ -49,8 +47,8 @@ class FavoriteViewModelTest : BaseViewModelTest() {
         coEvery { mockSoundRepository.getLikedSounds() } returns Resource.error(expectedMessage)
 
         viewModel.listLikedSounds()
-        assert(viewModel.sounds.value is Resource.error)
-        assertEquals(expectedMessage, (viewModel.sounds.value as Resource.error).msg)
+        assertThat(viewModel.sounds.value).isInstanceOf(Resource.error::class.java)
+        assertThat((viewModel.sounds.value as Resource.error).msg).isEqualTo(expectedMessage)
     }
 
     @Test
@@ -59,7 +57,7 @@ class FavoriteViewModelTest : BaseViewModelTest() {
 
         viewModel.sounds.observeForever(mockLiveDataObserver)
 
-        assertNotNull(mockSound)
+        assertThat(mockSound).isNotNull()
         viewModel.updateSound(mockSound)
 
         verify(exactly = 0) { mockLiveDataObserver.onChanged(any()) }

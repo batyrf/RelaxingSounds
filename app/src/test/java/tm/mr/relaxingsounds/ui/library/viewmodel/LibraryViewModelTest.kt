@@ -3,11 +3,11 @@ package tm.mr.relaxingsounds.ui.library.viewmodel
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import org.junit.*
-import org.junit.Assert.*
 import tm.mr.relaxingsounds.data.model.Category
 import tm.mr.relaxingsounds.data.model.Resource
 import tm.mr.relaxingsounds.data.repository.Repository
 import tm.mr.relaxingsounds.ui.BaseViewModelTest
+import com.google.common.truth.Truth.assertThat
 
 class LibraryViewModelTest : BaseViewModelTest() {
 
@@ -27,8 +27,9 @@ class LibraryViewModelTest : BaseViewModelTest() {
 
         viewModel.getCategories()
 
-        assertTrue(viewModel.categories.value is Resource.success)
-        assertEquals(expectedCategories, (viewModel.categories.value as Resource.success).data)
+        assertThat(viewModel.categories.value).isInstanceOf(Resource.success::class.java)
+        assertThat((viewModel.categories.value as Resource.success).data)
+            .isEqualTo(expectedCategories)
     }
 
     @Test
@@ -38,8 +39,9 @@ class LibraryViewModelTest : BaseViewModelTest() {
 
         viewModel.getCategories()
 
-        assertTrue(viewModel.categories.value is Resource.error)
-        assertEquals(expectedErrorMessage, (viewModel.categories.value as Resource.error).msg)
+        assertThat(viewModel.categories.value).isInstanceOf(Resource.error::class.java)
+        assertThat((viewModel.categories.value as Resource.error).msg)
+            .isEqualTo(expectedErrorMessage)
     }
 
 }
