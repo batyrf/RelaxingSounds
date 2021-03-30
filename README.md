@@ -15,7 +15,7 @@ Simultaneous Multiple Audio Player for relaxing tracks utilizing modern android 
 - [x] [unit tests]()
 - [x] [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 
-In the process of development tried to abide by git-flow principles.
+In the process of development tried to follow git-flow principles.
 
 ## Content
 Datas are provided from API made using firebase functions and firestore. Details on setting up your custom API without any help of backend engineer will be provided later.
